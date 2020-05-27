@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">MyOrder</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <!--    Шапка-->
+    <string name="guest_name_header">Привет, гость!</string>
+    <string name="empty_name_header"> Как вас зовут? </string>
+
+
+    <!--    Названия пунктов навигации-->
+    <string name="menu_products">Продукты</string>
+    <string name="menu_profile">Профиль</string>
+    <string name="menu_basket">Корзина</string>
+    <string name="menu_orders_moderator">Заказы клиентов</string>
+    <string name="menu_orders_courier">Мои доставляемые заказы</string>
+    <string name="menu_orders_user">Мои заказы</string>
+    <string name="menu_about">О нас</string>
+    <string name="order_client">Заказ</string>
+    <string name="details_fragment">О заказе</string>
+    <string name="courier_choice">Выбор курьера</string>
+
+
+
+    <!--    Фрагмент профиля -->
+    <string name="label_empty_name"> Ваше имя </string>
+    <string name="label_empty_phone"> Ваш телефон </string>
+    <string name="label_empty_address"> Ваш адрес </string>
+    <string name="textButton_save">Сохранить</string>
+    <string name="profile_refresh"> Профиль обновлён </string>
+    <string name="textButton_logout">Выйти</string>
+    <string name="bye"> До встречи! </string>
+
+
+    <!--    Фрагмент корзины -->
+    <string name="label_cost">Итого:</string>
+    <string name="label_success_order">Заказ оформлен! Скоро с вами свяжется администратор. </string>
+
+
+    <!--    Фрагмент заказов-->
+    <string name="card"> Карта </string>
+    <string name="cash"> Наличные </string>
+
+    <!--    Текста кнопок-->
+    <string name="textButton_code">ОК</string>
+
+    <!--    Текста кнопок-->
+    <string name="textButton_cancel">Отмена</string>
+
+    <!--    Меню новых заказов-->
+    <string name="menu_confirm_order">Подтвердить заказ</string>
+
+
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        app:showAsAction="collapseActionView"
+        android:title="Меню">
+
+        <item
+            android:id="@+id/appoint_courier"
+            android:title="Назначить курьера"></item>
+
+        <item
+            android:id="@+id/delete_order"
+            android:title="Удалить заказ"></item>
+
+        <item
+            android:id="@+id/close_order"
+            android:title="Закрыть заказ"></item>
+
+    </item>
+
+</menu>

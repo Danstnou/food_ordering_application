@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_products">
+
+    <fragment
+        android:id="@+id/nav_products"
+        android:name="com.example.myorder.view.products.ProductsFragment"
+        android:label="@string/menu_products" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.myorder.view.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_nav_profile_to_ordersUser"
+            app:destination="@id/ordersUser"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_cart"
+        android:name="com.example.myorder.view.cart.CartFragment"
+        android:label="@string/menu_basket"
+        tools:layout="@layout/cart_fragment">
+        <action
+            android:id="@+id/action_nav_basket_to_nav_order"
+            app:destination="@id/nav_order_client"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popExitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_order_client"
+        android:name="com.example.myorder.view.secondaryFragments.OrderClientFragment"
+        android:label="@string/order_client"
+        tools:layout="@layout/client_order_fragment" />
+
+    <fragment
+        android:id="@+id/nav_orders_moderator"
+        android:name="com.example.myorder.view.orders.swipeViews.OrdersCollectionFragment"
+        android:label="@string/menu_orders_moderator">
+        <action
+            android:id="@+id/action_nav_orders_to_newOrderDetailsFragment"
+            app:destination="@id/newOrderDetailsFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+        <action
+            android:id="@+id/action_nav_orders_to_confirmOrderDetailsFragment"
+            app:destination="@id/confirmOrderDetailsFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/newOrderDetailsFragment"
+        android:name="com.example.myorder.view.orders.new_orders.NewOrderDetails"
+        android:label="@string/details_fragment">
+        <action
+            android:id="@+id/action_newOrderDetailsFragment_to_nav_orders_moderator"
+            app:destination="@id/nav_orders_moderator"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmOrderDetailsFragment"
+        android:name="com.example.myorder.view.orders.confirmOrders.moderator.ConfirmOrderDetails"
+        android:label="@string/details_fragment">
+        <action
+            android:id="@+id/action_confirmOrderDetailsFragment_to_courierChoiceFragment"
+            app:destination="@id/courierChoiceFragment" />
+        <action
+            android:id="@+id/action_confirmOrderDetailsFragment_to_nav_orders_moderator"
+            app:destination="@id/nav_orders_moderator" />
+    </fragment>
+    <fragment
+        android:id="@+id/courierChoiceFragment"
+        android:name="com.example.myorder.view.orders.courierChoice.CourierChoice"
+        android:label="@string/courier_choice" />
+    <fragment
+        android:id="@+id/nav_orders_courier"
+        android:name="com.example.myorder.view.orders.confirmOrders.courier.ListOrdersCourier"
+        android:label="@string/menu_orders_courier">
+        <action
+            android:id="@+id/action_listOrdersCourier_to_courierOrderDetails"
+            app:destination="@id/courierOrderDetails"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/courierOrderDetails"
+        android:name="com.example.myorder.view.orders.confirmOrders.courier.CourierOrderDetails"
+        android:label="@string/details_fragment" />
+
+    <fragment
+        android:id="@+id/about"
+        android:name="com.example.myorder.view.about.AboutFragment"
+        android:label="@string/menu_about" />
+    <fragment
+        android:id="@+id/ordersUser"
+        android:name="com.example.myorder.view.orders.ordersUser.OrdersUser"
+        android:label="@string/menu_orders_user" >
+        <action
+            android:id="@+id/action_ordersUser_to_orderUserDetails"
+            app:destination="@id/orderUserDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderUserDetails"
+        android:name="com.example.myorder.view.orders.ordersUser.OrderUserDetails"
+        android:label="@string/details_fragment" />
+
+</navigation>
