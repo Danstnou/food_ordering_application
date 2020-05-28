@@ -1,7 +1,6 @@
 package com.example.myorder.view.orders.new_orders;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -70,7 +69,7 @@ public class NewOrderDetails extends Fragment {
 
     private void initRecyclerViewAndAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new ProductAdapter(order.productCartList, Glide.with(this)));
+        binding.recyclerView.setAdapter(new ProductAdapter(order.productList, Glide.with(this)));
         binding.recyclerView.addItemDecoration(Constants.itemDecoration);
     }
 

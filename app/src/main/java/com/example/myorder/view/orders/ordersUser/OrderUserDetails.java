@@ -19,46 +19,47 @@ import com.example.myorder.utils.Constants;
 import com.example.myorder.view.orders.base.ProductAdapter;
 
 public class OrderUserDetails extends Fragment {
-        private NewOrderDetailsBinding binding;
-        private SharedUserViewModel sharedUserViewModel;
-        private Order order;
+    private NewOrderDetailsBinding binding;
+    private SharedUserViewModel sharedUserViewModel;
+    private Order order;
 
-        @Nullable
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-                binding = NewOrderDetailsBinding.inflate(inflater, container, false);
-                return binding.getRoot();
-        }
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        binding = NewOrderDetailsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-                super.onActivityCreated(savedInstanceState);
-                sharedUserViewModel = new ViewModelProvider(getActivity()).get(SharedUserViewModel.class);
-                setHasOptionsMenu(true);
-                observeOrder();
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        sharedUserViewModel = new ViewModelProvider(getActivity()).get(SharedUserViewModel.class);
+        setHasOptionsMenu(true);
+        observeOrder();
+    }
 
-        private void observeOrder() {
-                sharedUserViewModel.getOrder().observe(getViewLifecycleOwner(), order -> {
-                        this.order = order;
-                        setTextFromOrder();
-                        initRecyclerViewAndAdapter();
-                });
-        }
+    private void observeOrder() {
+        sharedUserViewModel.getOrder().observe(getViewLifecycleOwner(), order -> {
+            this.order = order;
+            setTextFromOrder();
+            initRecyclerViewAndAdapter();
+        });
+    }
 
-        private void setTextFromOrder() {
-                binding.textViewDate.setText(Constants.dateFormat.format(order.date.toDate()));
-                binding.textViewComment.setText('"' + order.comment + '"');
-                binding.textViewCost.setText(order.total_cost + "р.");
-                binding.chipPayment.setText(order.type_payment);
-                binding.textViewName.setText(order.user.getName());
-                binding.textViewPhone.setText(order.user.getPhone());
-                binding.textViewAddress.setText(order.user.getAddress());
-        }
+    private void setTextFromOrder() {
+        binding.textViewDate.setText(Constants.dateFormat.format(order.date.toDate()));
+        binding.textViewComment.setText('"' + order.comment + '"');
+        binding.textViewCost.setText(order.total_cost + "р.");
+        binding.chipPayment.setText(order.type_payment);
+        binding.textViewName.setText(order.user.getName());
+        binding.textViewPhone.setText(order.user.getPhone());
+        binding.textViewAddress.setText(order.user.getAddress());
+    }
 
-        private void initRecyclerViewAndAdapter() {
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                binding.recyclerView.setAdapter(new ProductAdapter(order.productCartList, Glide.with(this)));
-                binding.recyclerView.addItemDecoration(Constants.itemDecoration);
-        }
+    private void initRecyclerViewAndAdapter() {
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setAdapter(new ProductAdapter(order.productList, Glide.with(this)));
+        binding.recyclerView.addItemDecoration(Constants.itemDecoration);
+    }
 }

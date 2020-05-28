@@ -3,7 +3,6 @@ package com.example.myorder.model.repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myorder.model.dto.About;
 import com.example.myorder.model.dto.Order;
 import com.example.myorder.model.entities.User;
 import com.example.myorder.utils.ExecutorServiceInstance;
@@ -60,15 +59,14 @@ public class OrderRepository {
         return instance;
     }
 
+    /*
+     * Репозиторий не изменяет своего состояния, если данные пустые (не изменяет на null)
+     */
     private List<Order> toOrders(QuerySnapshot queryDocumentSnapshots) {
-        List<Order> orderList = null;
+        List<Order> orderList = new ArrayList<>();
+        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+            orderList.add(documentSnapshot.toObject(Order.class));
 
-        if (!queryDocumentSnapshots.isEmpty()) {
-            orderList = new ArrayList<>();
-
-            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-                orderList.add(documentSnapshot.toObject(Order.class));
-        }
         return orderList;
     }
 
@@ -82,8 +80,10 @@ public class OrderRepository {
 
     public void observeNewOrders() {
         executorService.execute(() -> listenerNewOrders = collectionNewOrders
-                .addSnapshotListener((queryDocumentSnapshots, e) ->
-                        this.newOrderList.postValue(toOrders(queryDocumentSnapshots))));
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (!queryDocumentSnapshots.isEmpty())
+                        this.newOrderList.postValue(toOrders(queryDocumentSnapshots));
+                }));
     }
 
     public MutableLiveData<List<Order>> getNewOrderList() {

@@ -7,10 +7,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.example.myorder.R;
+import com.example.myorder.ViewModel.moderator.ModeratorViewModel;
 import com.example.myorder.model.entities.User;
 import com.example.myorder.model.repositories.UserRepository;
 
 public class MainActivityViewModel extends AndroidViewModel {
+    ModeratorViewModel moderatorViewModel;
     UserRepository userRepository;
     LiveData<User> user;
 

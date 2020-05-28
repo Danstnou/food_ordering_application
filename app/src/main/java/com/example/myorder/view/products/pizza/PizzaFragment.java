@@ -38,8 +38,6 @@ public class PizzaFragment extends BaseProductFragment {
                 return productList.get(position);
             }
         };
-
-
     }
 
     @Override

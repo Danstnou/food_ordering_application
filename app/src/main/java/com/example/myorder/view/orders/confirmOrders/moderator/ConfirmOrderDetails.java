@@ -72,7 +72,7 @@ public class ConfirmOrderDetails extends Fragment {
 
     protected void initRecyclerViewAndAdapter() {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setAdapter(new ProductAdapter(order.productCartList, Glide.with(this)));
+        binding.recyclerView.setAdapter(new ProductAdapter(order.productList, Glide.with(this)));
         binding.recyclerView.addItemDecoration(Constants.itemDecoration);
     }
 

@@ -10,7 +10,7 @@ public class Order {
     public String id;
     public Timestamp date;
     public UserDto user;
-    public List<ProductCart> productCartList;
+    public List<ProductCart> productList;
     public int total_cost;
     public String type_payment;
     public String comment;
@@ -20,12 +20,12 @@ public class Order {
     public Order() {
     }
 
-    public Order(Timestamp date, UserDto user, List<ProductCart> productCartList,
+    public Order(Timestamp date, UserDto user, List<ProductCart> productList,
                  int total_cost, String type_payment, String comment) {
         id = UUID.randomUUID().toString();
         this.date = date;
         this.user = user;
-        this.productCartList = productCartList;
+        this.productList = productList;
         this.total_cost = total_cost;
         this.type_payment = type_payment;
         this.comment = comment;

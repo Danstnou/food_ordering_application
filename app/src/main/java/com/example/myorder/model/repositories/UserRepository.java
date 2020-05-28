@@ -2,7 +2,6 @@ package com.example.myorder.model.repositories;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myorder.model.dto.About;
 import com.example.myorder.model.dto.Order;
 import com.example.myorder.model.dto.UserDto;
 import com.example.myorder.model.entities.User;
@@ -18,7 +17,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +31,6 @@ public class UserRepository {
     private AuthUI authUI;
     private List<AuthUI.IdpConfig> providers;
     private int RC_SIGN_IN = 1;
-
 
     // БД
     private FirebaseFirestore db;
@@ -224,7 +221,7 @@ public class UserRepository {
     public void close() {
         executorService.execute(() -> {
             if (subscribeUser != null)
-                subscribeUser.remove(); // ПРОВЕРИТЬ
+                subscribeUser.remove();
             subscribeUser = null;
             authenticatedUser.postValue(null);
         });

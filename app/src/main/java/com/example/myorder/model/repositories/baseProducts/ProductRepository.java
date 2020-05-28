@@ -6,7 +6,6 @@ import com.example.myorder.utils.ExecutorServiceInstance;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ public abstract class ProductRepository<T> {
     private CollectionReference collection;
 
     private MutableLiveData<List<T>> productList;
-    ListenerRegistration listenerProducts;
 
     ExecutorService executorService;
 
@@ -32,28 +30,21 @@ public abstract class ProductRepository<T> {
      */
 
     public void observeProducts() {
-        executorService.execute(() -> {
-            if (listenerProducts != null)
-                return;
+        executorService.execute(() -> collection.addSnapshotListener((queryDocumentSnapshots, e) -> {
 
-            listenerProducts = collection.addSnapshotListener((queryDocumentSnapshots, e) -> {
-                List<T> productList = null;
+            if (!queryDocumentSnapshots.isEmpty()) {
+                List<T> productList = new ArrayList<>();
 
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    productList = new ArrayList<>();
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+                    try {
+                        productList.add(fromDocumentSnapshotToProduct(documentSnapshot));
+                    } catch (Exception e1) {
+                    }
 
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-                        try {
-                            productList.add(fromDocumentSnapshotToProduct(documentSnapshot));
-                        } catch (Exception e1) {
-                        }
-
-                    java.util.Collections.shuffle(productList);
-                }
-
+                java.util.Collections.shuffle(productList);
                 this.productList.postValue(productList);
-            });
-        });
+            }
+        }));
     }
 
     protected abstract T fromDocumentSnapshotToProduct(DocumentSnapshot documentSnapshot);

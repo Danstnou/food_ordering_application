@@ -1,5 +1,8 @@
 package com.example.myorder;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -7,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -15,6 +19,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myorder.ViewModel.MainActivityViewModel;
+import com.example.myorder.ViewModel.courier.CourierViewModel;
+import com.example.myorder.ViewModel.moderator.ModeratorViewModel;
 import com.example.myorder.model.entities.User;
 import com.google.android.material.navigation.NavigationView;
 
@@ -77,16 +83,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkModerator(User userOrGuest) {
-        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("moderator"))
+        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("moderator")) {
             setVisibleModeratorMenu(true);
-        else
+            observeOrdersModerator();
+        } else
             setVisibleModeratorMenu(false);
     }
 
     private void checkCourier(User userOrGuest) {
-        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("courier"))
+        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("courier")) {
             setVisibleCourierMenu(true);
-        else
+            observeOrdersCouriers();
+        } else
             setVisibleCourierMenu(false);
     }
 
@@ -98,6 +106,53 @@ public class MainActivity extends AppCompatActivity {
     private void setVisibleCourierMenu(Boolean visibility) {
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_orders_courier).setVisible(visibility);
+    }
+
+    /*
+     * Если модератор, то следим за всеми новыми заказами
+     */
+
+    protected void observeOrdersModerator() {
+        ModeratorViewModel viewModel = new ViewModelProvider(this).get(ModeratorViewModel.class);
+        viewModel.getNewOrders().observe(this, orders -> {
+            int size = orders.size();
+            if (size != 0)
+                createNotificationChannel(size);
+        });
+    }
+
+    /*
+     * Если курьер, то следим за его новыми заказами
+     */
+
+    protected void observeOrdersCouriers() {
+        CourierViewModel viewModel = new ViewModelProvider(this).get(CourierViewModel.class);
+        viewModel.getOrders().observe(this, orders -> {
+            int size = orders.size();
+            if (size != 0)
+                createNotificationChannel(size);
+        });
+    }
+
+    private void createNotificationChannel(int size) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationCompat.Builder builder =
+                    new NotificationCompat.Builder(this, "new orders")
+                            .setSmallIcon(R.drawable.ic_keyboard_arrow_right_black_24dp)
+                            .setContentTitle("Новый заказ")
+                            .setContentText(size + " новых заказов!")
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationChannel channel = new NotificationChannel(
+                    "new orders",
+                    "Новый заказ",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription(size + " новых заказов!");
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+            notificationManager.notify(0, builder.build());
+        }
     }
 
     @Override
