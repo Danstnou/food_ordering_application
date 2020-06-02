@@ -47,6 +47,7 @@ public class ProductsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ordersFragmentAdapter = new ProductsFragmentAdapter(this);
         binding.pager.setAdapter(ordersFragmentAdapter);
+        binding.pager.setSaveFromParentEnabled(false);
 
         new TabLayoutMediator(binding.tabLayout, binding.pager,
                 (tab, position) -> tab.setText(getNameTab(position))

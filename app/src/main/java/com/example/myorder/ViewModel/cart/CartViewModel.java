@@ -5,23 +5,20 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
 import com.example.myorder.model.entities.ProductCart;
 import com.example.myorder.model.logic.CartLogic;
 import com.example.myorder.model.repositories.CartRepository;
-import com.example.myorder.utils.ExecutorServiceInstance;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 public class CartViewModel extends AndroidViewModel {
     private CartLogic cartLogic;
-    private ExecutorService executorService;
 
     public CartViewModel(@NonNull Application application) {
         super(application);
         cartLogic = new CartLogic(CartRepository.getInstance(application));
-        executorService = ExecutorServiceInstance.getInstance();
     }
 
     /*
@@ -42,5 +39,13 @@ public class CartViewModel extends AndroidViewModel {
 
     public LiveData<Integer> getTotalCost() {
         return cartLogic.getTotalCostCart();
+    }
+
+    /*
+     * Заказ
+     */
+
+    public LiveData toOrder() {
+        return Transformations.map(getTotalCost(), totalCost -> totalCost != null);
     }
 }

@@ -42,7 +42,7 @@ public class ListOrdersCourier extends ListOrders {
 
             @Override
             protected void setOptionalTextView(TextView textViewOptional, Order order) {
-                textViewOptional.setText(order.courier.name);
+                textViewOptional.setText('"' + order.comment + '"');
             }
         };
     }

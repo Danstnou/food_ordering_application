@@ -114,14 +114,12 @@ public abstract class BaseProductFragment extends Fragment implements ICartActio
                 if (bottomSheetDialogFragment.isAdded())
                     return;
 
-                int i = (int) v.getTag();
-                setProductAndShowBottomSheet(i);
+                buttonDetailsClick((int) v.getTag());
             });
-
             return viewHolder;
         }
 
-        abstract protected void setProductAndShowBottomSheet(int i);
+        abstract protected void buttonDetailsClick(int i);
 
         abstract protected BaseProduct getProductByPosition(int position);
 

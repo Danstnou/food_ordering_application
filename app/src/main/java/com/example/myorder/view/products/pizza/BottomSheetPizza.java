@@ -25,7 +25,6 @@ public class BottomSheetPizza extends BottomSheetDialogFragment {
     Pizza pizza;
     int cost;
     String size;
-    String category = "пицца";
 
     public BottomSheetPizza(RequestManager requestManager, ICartActions iCartActions) {
         this.requestManager = requestManager;

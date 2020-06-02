@@ -62,7 +62,7 @@ public class OrderClientFragment extends Fragment {
     }
 
     private void dialogSuccessOrder() {
-        new SuccessDialogFragment().show(getActivity().getSupportFragmentManager(), "Заказ оформлен");
+        new SuccessDialogFragment().show(getActivity().getSupportFragmentManager(), "");
     }
 
     @Override

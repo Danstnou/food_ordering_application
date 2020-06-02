@@ -49,6 +49,10 @@ public class CartRepository {
         executorService.execute(() -> cartDao.delete(product));
     }
 
+    public void deleteAll() {
+        executorService.execute(() -> cartDao.deleteAll());
+    }
+
     /*
      * Геттеры
      */

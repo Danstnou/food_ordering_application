@@ -31,4 +31,7 @@ public interface ICartDao {
 
     @Query("select sum(total_cost) from products")
     LiveData<Integer> getTotalCostCart();
+
+    @Query("delete from products")
+    void deleteAll();
 }

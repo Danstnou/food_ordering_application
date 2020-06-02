@@ -12,8 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.myorder.R;
 import com.example.myorder.databinding.RecyclerviewFragmentBinding;
@@ -44,8 +44,7 @@ public abstract class ListOrders extends Fragment {
 
     protected void initRecyclerViewAndAdapter() {
         binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.setLayoutManager(
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         setupAdapter();
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.addItemDecoration(Constants.itemDecoration);

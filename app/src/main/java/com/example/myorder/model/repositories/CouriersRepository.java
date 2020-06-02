@@ -44,10 +44,17 @@ public class CouriersRepository {
 
         executorService.execute(() -> collection.get().addOnCompleteListener(task -> {
             List<Courier> couriersList = null;
+
             if (task.isSuccessful()) {
                 couriersList = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult())
-                    couriersList.add(document.toObject(Courier.class));
+
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    try {
+                        couriersList.add(document.toObject(Courier.class));
+                    } catch (Exception e) {
+                    }
+                }
+
             }
             mutableLiveData.postValue(couriersList);
         }));

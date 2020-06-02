@@ -36,6 +36,7 @@
     <!--    Фрагмент корзины -->
     <string name="label_cost">Итого:</string>
     <string name="label_success_order">Заказ оформлен! Скоро с вами свяжется администратор. </string>
+    <string name="label_empty_cart">Корзина пустая! </string>
 
 
     <!--    Фрагмент заказов-->

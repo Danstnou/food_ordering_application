@@ -44,10 +44,6 @@ public class OrderRepository {
         collectionNewOrders = db.collection(pathNewOrders);
         collectionConfirmOrders = db.collection(pathConfirmOrders);
         collectionCompleteOrders = db.collection(pathCompleteOrders);
-
-        newOrderList = new MutableLiveData<>();
-        confirmOrderList = new MutableLiveData<>();
-        courierOrderList = new MutableLiveData<>();
     }
 
     public static OrderRepository instance;
@@ -59,14 +55,20 @@ public class OrderRepository {
         return instance;
     }
 
-    /*
-     * Репозиторий не изменяет своего состояния, если данные пустые (не изменяет на null)
-     */
     private List<Order> toOrders(QuerySnapshot queryDocumentSnapshots) {
-        List<Order> orderList = new ArrayList<>();
-        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-            orderList.add(documentSnapshot.toObject(Order.class));
+        List<Order> orderList = null;
 
+        if (!queryDocumentSnapshots.isEmpty()) {
+            orderList = new ArrayList<>();
+
+            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                try {
+                    orderList.add(documentSnapshot.toObject(Order.class));
+                } catch (Exception e) {
+                }
+            }
+
+        }
         return orderList;
     }
 
@@ -79,16 +81,19 @@ public class OrderRepository {
     }
 
     public void observeNewOrders() {
+        if (listenerNewOrders != null)
+            return;
+
         executorService.execute(() -> listenerNewOrders = collectionNewOrders
-                .addSnapshotListener((queryDocumentSnapshots, e) -> {
-                    if (!queryDocumentSnapshots.isEmpty())
-                        this.newOrderList.postValue(toOrders(queryDocumentSnapshots));
-                }));
+                .addSnapshotListener((queryDocumentSnapshots, e) ->
+                        this.newOrderList.postValue(toOrders(queryDocumentSnapshots))));
     }
 
     public MutableLiveData<List<Order>> getNewOrderList() {
-        if (listenerNewOrders == null)
+        if (newOrderList == null) {
+            newOrderList = new MutableLiveData<>();
             observeNewOrders();
+        }
         return newOrderList;
     }
 
@@ -108,14 +113,19 @@ public class OrderRepository {
     }
 
     public void observeConfirmOrders() {
+        if (listenerConfirmOrders != null)
+            return;
+
         executorService.execute(() -> listenerConfirmOrders = collectionConfirmOrders
                 .addSnapshotListener((queryDocumentSnapshots, e) ->
                         this.confirmOrderList.postValue(toOrders(queryDocumentSnapshots))));
     }
 
     public MutableLiveData<List<Order>> getConfirmOrderList() {
-        if (listenerConfirmOrders == null)
+        if (confirmOrderList == null) {
+            confirmOrderList = new MutableLiveData<>();
             observeConfirmOrders();
+        }
         return confirmOrderList;
     }
 
@@ -131,6 +141,9 @@ public class OrderRepository {
      */
 
     public void observeOrdersCourier(User courier) {
+        if (listenerOrdersCourier != null)
+            return;
+
         executorService.execute(() -> listenerOrdersCourier = collectionConfirmOrders
                 .whereEqualTo("id_courier", courier.getPhone())
                 .addSnapshotListener((queryDocumentSnapshots, e) ->
@@ -138,23 +151,27 @@ public class OrderRepository {
     }
 
     public LiveData<List<Order>> getOrdersCourier(User courier) {
-        if (listenerOrdersCourier == null)
+        if (courierOrderList == null) {
+            courierOrderList = new MutableLiveData<>();
             observeOrdersCourier(courier);
+        }
         return courierOrderList;
     }
 
     public void close() {
         if (listenerNewOrders != null)
             listenerNewOrders.remove();
+        listenerNewOrders = null;
+        newOrderList = null;
 
         if (listenerConfirmOrders != null)
             listenerConfirmOrders.remove();
+        listenerConfirmOrders = null;
+        confirmOrderList = null;
 
         if (listenerOrdersCourier != null)
             listenerOrdersCourier.remove();
-
-        listenerNewOrders = null;
-        listenerConfirmOrders = null;
         listenerOrdersCourier = null;
+        courierOrderList = null;
     }
 }

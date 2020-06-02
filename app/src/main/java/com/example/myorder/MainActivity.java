@@ -1,8 +1,6 @@
 package com.example.myorder;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -19,9 +16,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myorder.ViewModel.MainActivityViewModel;
-import com.example.myorder.ViewModel.courier.CourierViewModel;
-import com.example.myorder.ViewModel.moderator.ModeratorViewModel;
 import com.example.myorder.model.entities.User;
+import com.example.myorder.service.ServiceCourier;
+import com.example.myorder.service.ServiceModerator;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         navigationView = findViewById(R.id.nav_view);
 
+        setVisibleRoleMenu(false, R.id.nav_orders_moderator);
+        setVisibleRoleMenu(false, R.id.nav_orders_courier);
+
         createNavigation();
-        setVisibleModeratorMenu(false);
-        setVisibleCourierMenu(false);
         observeUser();
     }
 
@@ -63,11 +61,16 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
     }
 
+    /*
+     * Подписка на пользователя
+     */
+
     private void observeUser() {
         mainActivityViewModel.getUserOrGuest().observe(this, userOrGuest -> {
             setTextUser(userOrGuest);
-            checkModerator(userOrGuest);
-            checkCourier(userOrGuest);
+
+            observeModerator();
+            observeCourier();
         });
     }
 
@@ -82,77 +85,42 @@ public class MainActivity extends AppCompatActivity {
         textViewPhone.setText(userOrGuest.getPhone());
     }
 
-    private void checkModerator(User userOrGuest) {
-        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("moderator")) {
-            setVisibleModeratorMenu(true);
-            observeOrdersModerator();
-        } else
-            setVisibleModeratorMenu(false);
-    }
-
-    private void checkCourier(User userOrGuest) {
-        if (userOrGuest.getRoles() != null && userOrGuest.getRoles().get("courier")) {
-            setVisibleCourierMenu(true);
-            observeOrdersCouriers();
-        } else
-            setVisibleCourierMenu(false);
-    }
-
-    private void setVisibleModeratorMenu(Boolean visibility) {
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_orders_moderator).setVisible(visibility);
-    }
-
-    private void setVisibleCourierMenu(Boolean visibility) {
-        Menu nav_Menu = navigationView.getMenu();
-        nav_Menu.findItem(R.id.nav_orders_courier).setVisible(visibility);
-    }
-
     /*
-     * Если модератор, то следим за всеми новыми заказами
+     * Подписка на модератора
      */
 
-    protected void observeOrdersModerator() {
-        ModeratorViewModel viewModel = new ViewModelProvider(this).get(ModeratorViewModel.class);
-        viewModel.getNewOrders().observe(this, orders -> {
-            int size = orders.size();
-            if (size != 0)
-                createNotificationChannel(size);
+    private void observeModerator() {
+        mainActivityViewModel.getIsModerator().observe(this, isModerator -> {
+            setVisibleRoleMenu(isModerator, R.id.nav_orders_moderator);
+            serviceNewOrders(isModerator, ServiceModerator.class);
         });
     }
 
     /*
-     * Если курьер, то следим за его новыми заказами
+     * Курьер
      */
 
-    protected void observeOrdersCouriers() {
-        CourierViewModel viewModel = new ViewModelProvider(this).get(CourierViewModel.class);
-        viewModel.getOrders().observe(this, orders -> {
-            int size = orders.size();
-            if (size != 0)
-                createNotificationChannel(size);
+    private void observeCourier() {
+        mainActivityViewModel.getIsCourier().observe(this, isCourier -> {
+            setVisibleRoleMenu(isCourier, R.id.nav_orders_courier);
+            serviceNewOrders(isCourier, ServiceCourier.class);
         });
     }
 
-    private void createNotificationChannel(int size) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder =
-                    new NotificationCompat.Builder(this, "new orders")
-                            .setSmallIcon(R.drawable.ic_keyboard_arrow_right_black_24dp)
-                            .setContentTitle("Новый заказ")
-                            .setContentText(size + " новых заказов!")
-                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+    /*
+     * Прочее
+     */
 
-            NotificationChannel channel = new NotificationChannel(
-                    "new orders",
-                    "Новый заказ",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(size + " новых заказов!");
+    private void serviceNewOrders(Boolean fl, Class<?> cls) {
+        if (fl)
+            startService(new Intent(MainActivity.this, cls));
+        else
+            stopService(new Intent(MainActivity.this, cls));
+    }
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-            notificationManager.notify(0, builder.build());
-        }
+    private void setVisibleRoleMenu(Boolean visibility, int who) {
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(who).setVisible(visibility);
     }
 
     @Override

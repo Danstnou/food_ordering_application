@@ -28,6 +28,7 @@ import com.example.myorder.ViewModel.cart.CartViewModel;
 import com.example.myorder.databinding.CartFragmentBinding;
 import com.example.myorder.model.entities.ProductCart;
 import com.example.myorder.utils.Constants;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -66,10 +67,18 @@ public class CartFragment extends Fragment implements ICartActions {
     }
 
     private void clickListenerOrder() {
-        binding.buttonOrder.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.action_nav_basket_to_nav_order);
-        });
+        binding.buttonOrder.setOnClickListener(v ->
+                cartViewModel.toOrder().observe(getViewLifecycleOwner(), o -> {
+                    if ((Boolean) o)
+                        navOrder();
+                    else
+                        Snackbar.make(binding.getRoot(), getString(R.string.label_empty_cart), Snackbar.LENGTH_SHORT).show();
+                }));
+    }
+
+    private void navOrder() {
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        navController.navigate(R.id.action_nav_basket_to_nav_order);
     }
 
     @Override
@@ -151,9 +160,9 @@ public class CartFragment extends Fragment implements ICartActions {
 
             requestManager.load(product.logo).into(holder.logo);
             holder.name.setText(product.name + ", " + product.size);
-            holder.cost.setText(product.cost_one + "р.");
+            holder.cost.setText(product.cost_one + "р. за одну шт.");
             holder.totalCost.setText(product.total_cost + "р.");
-            holder.count.setText(product.count + "шт.");
+            holder.count.setText(product.count + "шт. за");
             holder.buttonAdd.setTag(position);
             holder.buttonRemove.setTag(position);
         }

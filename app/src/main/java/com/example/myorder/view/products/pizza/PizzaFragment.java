@@ -28,7 +28,7 @@ public class PizzaFragment extends BaseProductFragment {
             }
 
             @Override
-            protected void setProductAndShowBottomSheet(int i) {
+            protected void buttonDetailsClick(int i) {
                 ((BottomSheetPizza) bottomSheetDialogFragment).setPizza(productList.get(i));
                 bottomSheetDialogFragment.show(fragmentManager, "Подробнее");
             }

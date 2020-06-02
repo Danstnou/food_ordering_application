@@ -6,11 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.myorder.model.dto.Product;
 import com.example.myorder.model.entities.ProductCart;
 import com.example.myorder.model.logic.CartLogic;
 import com.example.myorder.model.repositories.CartRepository;
-import com.example.myorder.model.repositories.baseProducts.ProductRepository;
+import com.example.myorder.model.repositories.ProductRepository;
 import com.example.myorder.utils.ExecutorServiceInstance;
 
 import java.util.List;
@@ -37,23 +36,6 @@ public abstract class BaseProductViewModel<T> extends AndroidViewModel {
     public MutableLiveData<List<T>> getProductList() {
         return productRepository.getProductList();
     }
-
-    /*
-     * Сохраняем выбранный продукт для bottomSheet
-     */
-
-    public MutableLiveData<T> getSelectedProduct() {
-        return selectedProduct;
-    }
-
-    public void setSelectedProduct(T product){
-        executorService.execute(()-> selectedProduct.postValue(product));
-    }
-
-    /*
-     * Реализация интерфейса: ICartActions
-     * (Сообщаем Репозиторию, что пользователь внёс какие-то изменения в корзину)
-     */
 
     public void increaseProduct(ProductCart productCart) {
         cartService.increaseProduct(productCart);

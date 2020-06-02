@@ -16,7 +16,6 @@ import com.example.myorder.model.dto.Product;
 import com.example.myorder.model.entities.ProductCart;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-
 public class BottomSheetProduct extends BottomSheetDialogFragment {
     private ProductBottomSheetBinding binding;
     private ICartActions cartActions;
@@ -39,10 +38,12 @@ public class BottomSheetProduct extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         binding.buttonAdd.setOnClickListener(v -> {
             cartActions.increaseProduct(buildProductCart());
             Toast.makeText(getContext(), "Продукт добавлен", Toast.LENGTH_SHORT).show();
         });
+
         setupView();
     }
 
@@ -51,9 +52,7 @@ public class BottomSheetProduct extends BottomSheetDialogFragment {
     }
 
     public void setupView() {
-        requestManager
-                .load(product.logo)
-                .into(binding.logo);
+        requestManager.load(product.logo).into(binding.logo);
 
         binding.textViewName.setText(product.name);
         binding.textViewIngredients.setText(product.ingredients);

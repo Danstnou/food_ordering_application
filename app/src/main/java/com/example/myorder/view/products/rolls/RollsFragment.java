@@ -29,7 +29,7 @@ public class RollsFragment extends BaseProductFragment {
             }
 
             @Override
-            protected void setProductAndShowBottomSheet(int i) {
+            protected void buttonDetailsClick(int i) {
                 ((BottomSheetProduct) bottomSheetDialogFragment).setProduct(productList.get(i));
                 bottomSheetDialogFragment.show(fragmentManager, "Подробнее");
             }

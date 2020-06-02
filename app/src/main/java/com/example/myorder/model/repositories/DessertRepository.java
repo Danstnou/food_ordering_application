@@ -1,7 +1,6 @@
 package com.example.myorder.model.repositories;
 
 import com.example.myorder.model.dto.Product;
-import com.example.myorder.model.repositories.baseProducts.ProductRepository;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 public class DessertRepository extends ProductRepository<Product> {
