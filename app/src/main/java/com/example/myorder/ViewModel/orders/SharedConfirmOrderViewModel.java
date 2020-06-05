@@ -36,7 +36,7 @@ public class SharedConfirmOrderViewModel extends ViewModel {
             order.courier = courier;
             order.id_courier = courier.phone;
 
-            orderRepository.saveConfirmOrder(order);
+            orderRepository.updateCourier(order);
             this.order.postValue(order);
         });
     }

@@ -81,7 +81,7 @@ public class CourierChoice extends Fragment {
 
             viewHolder.buttonSelect.setOnClickListener(v -> {
                 Courier courier = couriersList.get((Integer) v.getTag());
-                sharedOrderViewModel.setCourier(courier);
+                sharedOrderViewModel.setCourier(courier); // может и не обновиться, так как другой модератор мог удалить заказ
                 Snackbar.make(getView(), "Курьер " + courier.name + " назначен", Snackbar.LENGTH_SHORT).show();
                 Navigation.findNavController(getActivity(), R.id.nav_host_fragment).popBackStack();
             });

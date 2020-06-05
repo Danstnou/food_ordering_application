@@ -137,7 +137,9 @@ public class UserRepository {
 
     private void observeUser(String phone) {
         executorService.execute(() -> {
-            subscribeUser = collection.document(phone).addSnapshotListener((documentSnapshot, e) -> {
+            subscribeUser = collection
+                    .document(phone)
+                    .addSnapshotListener((documentSnapshot, e) -> {
                 if (documentSnapshot.exists()) {
                     User user = this.authenticatedUser.getValue();
                     user.setFieldsDto(documentSnapshot.toObject(UserDto.class));

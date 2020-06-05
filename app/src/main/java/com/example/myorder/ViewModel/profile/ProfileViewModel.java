@@ -53,7 +53,7 @@ public class ProfileViewModel extends AndroidViewModel {
         return userRepository.getUserOrders();
     }
 
-    public void close() {
+    public void logout() {
         userRepository.close();
         OrderRepository.getInstance().close();
     }

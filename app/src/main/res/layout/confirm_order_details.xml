@@ -75,7 +75,7 @@
                 app:layout_constraintHeight_percent="0.17"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_date"
-                tools:text='"sdfsdfsadfsdaf sdaf sdafsdafsdafsdaf sdafsdfsdafsdafsa fdsfsadfasdfsdf dsfa"' />
+                tools:text='"Комментарий покупателя"' />
 
             <View
                 android:id="@+id/divider"
@@ -111,7 +111,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:layout_constraintStart_toEndOf="@+id/textView_name"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
-                tools:text="+79994568712" />
+                tools:text="+7999-999-99-99" />
 
             <TextView
                 android:id="@+id/textView_address"
@@ -123,7 +123,7 @@
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_phone"
-                tools:text="2-ой Совхозный проезд, д.36, кв.22 2-ой Совхозный проезд, д.36, кв.22" />
+                tools:text="Адрес покупателя" />
 
             <TextView
                 android:id="@+id/textView_courier"
@@ -136,7 +136,7 @@
                 android:textColor="#673AB7"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_address"
-                tools:text="Курьер: Андрей Матвеев" />
+                tools:text="Курьер: " />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

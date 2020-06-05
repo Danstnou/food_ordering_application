@@ -67,7 +67,6 @@ public class OrderRepository {
                 } catch (Exception e) {
                 }
             }
-
         }
         return orderList;
     }
@@ -97,6 +96,7 @@ public class OrderRepository {
         return newOrderList;
     }
 
+    // при удалении возвращать ответ, успешно ли. и так все вызовы, чтобы не возникло расхождений
     public void deleteNewOrder(Order order) {
         executorService.execute(() ->
                 collectionNewOrders.document(order.id).delete().addOnSuccessListener(
@@ -110,6 +110,15 @@ public class OrderRepository {
 
     public void saveConfirmOrder(Order order) {
         executorService.execute(() -> collectionConfirmOrders.document(order.id).set(order));
+    }
+
+    public void updateCourier(Order order) {
+        executorService.execute(() -> collectionConfirmOrders
+                .document(order.id)
+                .update("courier", order.courier)
+                .addOnCompleteListener(task -> {
+                })
+        );
     }
 
     public void observeConfirmOrders() {

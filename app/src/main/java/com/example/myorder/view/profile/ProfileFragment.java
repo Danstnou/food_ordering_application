@@ -123,7 +123,7 @@ public class ProfileFragment extends Fragment {
 
     private void listenerButtonLogout() {
         binding.buttonLogout.setOnClickListener(v -> {
-            profileViewModel.close();
+            profileViewModel.logout();
 
             profileViewModel.getAuthUI()
                     .signOut(getContext())

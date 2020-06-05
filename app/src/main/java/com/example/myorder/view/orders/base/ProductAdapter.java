@@ -37,9 +37,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
         requestManager.load(productCart.logo).into(holder.logo);
         holder.name.setText(productCart.name);
-        holder.cost.setText(productCart.cost_one + "р.");
+        holder.cost.setText(productCart.cost_one + "р. за одну шт.");
         holder.totalCost.setText(productCart.total_cost + "р.");
-        holder.count.setText(productCart.count + "шт");
+        holder.count.setText(productCart.count + "шт. за");
     }
 
     @Override
